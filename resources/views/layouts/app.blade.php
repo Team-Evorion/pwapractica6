@@ -59,6 +59,19 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('dashboard') }}">Inicio</a>
                         </li>
+                        @if (auth()->user()->hasRole(\App\Models\Role::ADMINISTRATOR))
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('admin.dashboard') }}">Panel Admin</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('admin.users.index') }}">Usuarios</a>
+                            </li>
+                        @endif
+                        @if (auth()->user()->hasRole(\App\Models\Role::SUPPLIER))
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('suppliers.dashboard') }}">Proveedores</a>
+                            </li>
+                        @endif
                         <li class="nav-item">
                             <form method="POST" action="{{ route('logout') }}" class="d-inline">
                                 @csrf
@@ -82,6 +95,13 @@
         @if (session('status'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session('status') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+            </div>
+        @endif
+
+        @if ($errors->has('general'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ $errors->first('general') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
             </div>
         @endif
