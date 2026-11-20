@@ -16,12 +16,13 @@ Route::middleware('auth')->group(function () {
         return view('dashboard');
     })->name('dashboard');
 
-    // Rutas destino temporales para redirección por rol (se reemplazarán en Etapas 3, 5 y 6)
+    // Ruta destino protegida por rol Administrator (se completará en Etapas 4 y 5)
     Route::get('/admin/dashboard', function () {
         return view('dashboard');
-    })->name('admin.dashboard');
+    })->middleware('role:Administrator')->name('admin.dashboard');
 
+    // Ruta destino protegida por rol Supplier (se completará en Etapa 6)
     Route::get('/suppliers/dashboard', function () {
         return view('dashboard');
-    })->name('suppliers.dashboard');
+    })->middleware('role:Supplier')->name('suppliers.dashboard');
 });
