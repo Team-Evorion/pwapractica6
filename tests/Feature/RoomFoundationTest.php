@@ -66,6 +66,8 @@ class RoomFoundationTest extends TestCase
             'room_type' => 'Suite',
             'room_price' => '140.00',
             'is_available' => true,
+            'image_path' => 'images/rooms/room-suite.webp',
         ]);
+        $this->assertFileExists(public_path('images/rooms/room-suite.webp'));
     }
 }

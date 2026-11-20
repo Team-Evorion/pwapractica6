@@ -11,6 +11,13 @@ class Room extends Model
     /** @use HasFactory<RoomFactory> */
     use HasFactory;
 
+    public const TYPES = [
+        'Individual',
+        'Doble',
+        'Suite',
+        'Familiar',
+    ];
+
     protected $fillable = [
         'room_number',
         'room_type',

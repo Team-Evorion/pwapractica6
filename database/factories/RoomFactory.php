@@ -20,15 +20,22 @@ class RoomFactory extends Factory
             'Suite',
             'Familiar',
         ];
+        $roomType = fake()->randomElement($roomTypes);
+        $images = [
+            'Individual' => 'images/rooms/room-individual.webp',
+            'Doble' => 'images/rooms/room-doble.webp',
+            'Suite' => 'images/rooms/room-suite.webp',
+            'Familiar' => 'images/rooms/room-familiar.webp',
+        ];
 
         return [
             'room_number' => fake()->unique()->numberBetween(100, 999),
-            'room_type' => fake()->randomElement($roomTypes),
+            'room_type' => $roomType,
             'room_price' => fake()->randomFloat(2, 35, 350),
             'is_available' => true,
             'description' => fake()->sentence(12),
             'capacity' => fake()->numberBetween(1, 6),
-            'image_path' => null,
+            'image_path' => $images[$roomType],
         ];
     }
 
