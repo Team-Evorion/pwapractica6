@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\UserManagementController;
 use Illuminate\Support\Facades\Route;
 
@@ -7,11 +8,7 @@ Route::middleware(['auth', 'role:Administrator'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
-        // Dashboard temporal hasta Etapa 5
-        Route::get('/dashboard', function () {
-            return view('dashboard');
-        })->name('dashboard');
-
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
         Route::get('/users', [UserManagementController::class, 'index'])->name('users.index');
         Route::get('/users/create', [UserManagementController::class, 'create'])->name('users.create');
         Route::post('/users', [UserManagementController::class, 'store'])->name('users.store');

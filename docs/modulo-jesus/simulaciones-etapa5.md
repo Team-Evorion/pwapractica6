@@ -1,0 +1,1 @@
+Etapa 5: $mockHotelSummary en pp/Http/Controllers/Admin/AdminDashboardController.php es simulado hasta integrar Habitaciones y Reservaciones.
