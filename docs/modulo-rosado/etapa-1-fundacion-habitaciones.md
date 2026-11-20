@@ -41,3 +41,9 @@ El catálogo se comprobó con viewports reales de 360, 768 y 1280 píxeles.
 - 1280 px: tres tarjetas por fila y filtro de 1116 px.
 
 Las tres medidas cargaron las ocho habitaciones, las hojas de estilo, JavaScript y las cuatro fotografías locales.
+
+## Etapa 3 Fotografias administrables
+
+Los formularios permiten cargar JPG, PNG o WebP de hasta 4 MB. Los archivos subidos se guardan en el disco public de Laravel. Al reemplazar o eliminar una habitación se elimina únicamente la fotografía cargada correspondiente. Las cuatro imágenes predeterminadas del catálogo permanecen protegidas.
+
+En cada instalación debe ejecutarse php artisan storage:link para publicar las imágenes cargadas.

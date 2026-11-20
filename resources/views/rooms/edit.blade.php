@@ -10,7 +10,7 @@
                 <p class="eyebrow">Habitación {{ $room->room_number }}</p>
                 <h1>Editar habitación</h1>
             </div>
-            <form method="POST" action="{{ route('rooms.update', $room) }}">
+            <form method="POST" action="{{ route('rooms.update', $room) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 @include('rooms._form', ['room' => $room])

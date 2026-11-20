@@ -10,7 +10,7 @@
                 <p class="eyebrow">Gestión del hotel</p>
                 <h1>Nueva habitación</h1>
             </div>
-            <form method="POST" action="{{ route('rooms.store') }}">
+            <form method="POST" action="{{ route('rooms.store') }}" enctype="multipart/form-data">
                 @csrf
                 @include('rooms._form')
                 <div class="form-actions">

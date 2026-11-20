@@ -21,3 +21,19 @@ document.querySelectorAll('[data-delete-room]').forEach((form) => {
         }
     });
 });
+
+document.querySelectorAll('[data-room-image-input]').forEach((input) => {
+    input.addEventListener('change', () => {
+        const preview = input.closest('form').querySelector('[data-room-image-preview]');
+        const image = preview.querySelector('img');
+        const file = input.files[0];
+
+        if (!file) {
+            return;
+        }
+
+        image.src = URL.createObjectURL(file);
+        preview.classList.remove('d-none');
+        image.addEventListener('load', () => URL.revokeObjectURL(image.src), { once: true });
+    });
+});

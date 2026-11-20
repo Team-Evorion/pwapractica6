@@ -7,6 +7,8 @@ use App\Models\Room;
 use App\Models\User;
 use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class RoomManagementTest extends TestCase
@@ -82,6 +84,24 @@ class RoomManagementTest extends TestCase
         $this->actingAs($customer)
             ->get(route('rooms.edit', $room))
             ->assertForbidden();
+    }
+
+    public function test_only_room_managers_can_open_an_unavailable_room(): void
+    {
+        $room = Room::factory()->unavailable()->create();
+
+        $this->get(route('rooms.show', $room))
+            ->assertNotFound();
+
+        $customer = $this->userWithRole(Role::CUSTOMER);
+        $this->actingAs($customer)
+            ->get(route('rooms.show', $room))
+            ->assertNotFound();
+
+        $manager = $this->userWithRole(Role::HOTEL_MANAGER);
+        $this->actingAs($manager)
+            ->get(route('rooms.show', $room))
+            ->assertOk();
     }
 
     public function test_hotel_manager_can_create_update_and_delete_a_room(): void
@@ -165,6 +185,39 @@ class RoomManagementTest extends TestCase
             'min_price' => 200,
             'max_price' => 100,
         ]))->assertSessionHasErrors('max_price');
+    }
+
+    public function test_hotel_manager_can_upload_replace_and_delete_a_room_image(): void
+    {
+        Storage::fake('public');
+
+        $manager = $this->userWithRole(Role::HOTEL_MANAGER);
+
+        $this->actingAs($manager)
+            ->post(route('rooms.store'), $this->validPayload([
+                'room_number' => 1101,
+                'image' => UploadedFile::fake()->image('first-room.jpg', 1200, 800),
+            ]))
+            ->assertRedirectToRoute('rooms.manage');
+
+        $room = Room::where('room_number', 1101)->sole();
+        $firstPath = substr($room->image_path, strlen('storage/'));
+        Storage::disk('public')->assertExists($firstPath);
+
+        $this->put(route('rooms.update', $room), $this->validPayload([
+            'room_number' => 1101,
+            'image' => UploadedFile::fake()->image('replacement-room.png', 1200, 800),
+        ]))->assertRedirectToRoute('rooms.manage');
+
+        $room->refresh();
+        $replacementPath = substr($room->image_path, strlen('storage/'));
+        Storage::disk('public')->assertMissing($firstPath);
+        Storage::disk('public')->assertExists($replacementPath);
+
+        $this->delete(route('rooms.destroy', $room))
+            ->assertRedirectToRoute('rooms.manage');
+
+        Storage::disk('public')->assertMissing($replacementPath);
     }
 
     private function userWithRole(string $roleName): User

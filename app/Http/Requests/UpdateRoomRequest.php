@@ -34,6 +34,7 @@ class UpdateRoomRequest extends FormRequest
             'is_available' => ['required', 'boolean'],
             'description' => ['nullable', 'string', 'max:2000'],
             'capacity' => ['required', 'integer', 'min:1', 'max:20'],
+            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
         ];
     }
 
@@ -44,6 +45,9 @@ class UpdateRoomRequest extends FormRequest
             'room_type.in' => 'Selecciona un tipo de habitación válido.',
             'room_price.decimal' => 'El precio puede tener un máximo de dos decimales.',
             'is_available.boolean' => 'El estado de disponibilidad no es válido.',
+            'image.image' => 'Selecciona una imagen válida.',
+            'image.mimes' => 'La imagen debe usar formato JPG, PNG o WebP.',
+            'image.max' => 'La imagen no puede superar 4 MB.',
         ];
     }
 }

@@ -9,7 +9,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
+use Throwable;
 
 class RoomController extends Controller
 {
@@ -59,7 +61,13 @@ class RoomController extends Controller
 
     public function store(StoreRoomRequest $request): RedirectResponse
     {
-        $room = Room::create($request->validated());
+        $data = $request->safe()->except('image');
+
+        if ($request->hasFile('image')) {
+            $data['image_path'] = 'storage/'.$request->file('image')->store('rooms', 'public');
+        }
+
+        $room = Room::create($data);
 
         return redirect()
             ->route('rooms.manage')
@@ -68,6 +76,10 @@ class RoomController extends Controller
 
     public function show(Room $room): View
     {
+        if (! $room->is_available && ! Gate::allows('update', $room)) {
+            abort(404);
+        }
+
         return view('rooms.show', compact('room'));
     }
 
@@ -83,7 +95,28 @@ class RoomController extends Controller
 
     public function update(UpdateRoomRequest $request, Room $room): RedirectResponse
     {
-        $room->update($request->validated());
+        $data = $request->safe()->except('image');
+        $previousImagePath = $room->image_path;
+        $newStoredPath = null;
+
+        if ($request->hasFile('image')) {
+            $newStoredPath = $request->file('image')->store('rooms', 'public');
+            $data['image_path'] = 'storage/'.$newStoredPath;
+        }
+
+        try {
+            $room->update($data);
+        } catch (Throwable $exception) {
+            if ($newStoredPath !== null) {
+                Storage::disk('public')->delete($newStoredPath);
+            }
+
+            throw $exception;
+        }
+
+        if ($newStoredPath !== null) {
+            $this->deleteUploadedImage($previousImagePath);
+        }
 
         return redirect()
             ->route('rooms.manage')
@@ -95,7 +128,9 @@ class RoomController extends Controller
         Gate::authorize('delete', $room);
 
         $roomNumber = $room->room_number;
+        $imagePath = $room->image_path;
         $room->delete();
+        $this->deleteUploadedImage($imagePath);
 
         return redirect()
             ->route('rooms.manage')
@@ -132,5 +167,14 @@ class RoomController extends Controller
             'min_price' => ['nullable', 'numeric', 'min:0', 'max:99999999.99'],
             'max_price' => ['nullable', 'numeric', 'min:0', 'max:99999999.99', 'gte:min_price'],
         ]);
+    }
+
+    private function deleteUploadedImage(?string $imagePath): void
+    {
+        if ($imagePath === null || ! str_starts_with($imagePath, 'storage/')) {
+            return;
+        }
+
+        Storage::disk('public')->delete(substr($imagePath, strlen('storage/')));
     }
 }

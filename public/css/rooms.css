@@ -389,6 +389,22 @@ body {
     padding-top: 1.5rem;
 }
 
+.image-preview {
+    background: var(--hotel-cloud);
+    border: 1px solid var(--hotel-border);
+    border-radius: 1rem;
+    margin-top: 1rem;
+    max-width: 28rem;
+    overflow: hidden;
+}
+
+.image-preview img {
+    aspect-ratio: 16 / 10;
+    display: block;
+    object-fit: cover;
+    width: 100%;
+}
+
 .hotel-footer {
     background: var(--hotel-ink);
     color: #cbd5e1;

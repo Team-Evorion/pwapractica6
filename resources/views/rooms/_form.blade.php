@@ -35,6 +35,15 @@
         @error('description')<div class="invalid-feedback">{{ $message }}</div>@enderror
     </div>
     <div class="col-12">
+        <label class="form-label" for="image">Fotografía</label>
+        <input class="form-control @error('image') is-invalid @enderror" id="image" name="image" type="file" accept="image/jpeg,image/png,image/webp" data-room-image-input>
+        <p class="form-text">JPG, PNG o WebP de hasta 4 MB.</p>
+        @error('image')<div class="invalid-feedback">{{ $message }}</div>@enderror
+        <div class="image-preview {{ $currentRoom?->image_path ? '' : 'd-none' }}" data-room-image-preview>
+            <img src="{{ $currentRoom?->image_path ? asset($currentRoom->image_path) : '' }}" alt="Vista previa de la habitación">
+        </div>
+    </div>
+    <div class="col-12">
         <input name="is_available" type="hidden" value="0">
         <div class="form-check form-switch">
             <input class="form-check-input" id="is_available" name="is_available" type="checkbox" value="1" @checked((bool) old('is_available', $currentRoom?->is_available ?? true))>
