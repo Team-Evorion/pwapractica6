@@ -106,4 +106,84 @@ class RevisionChangesTest extends TestCase
             'item_type' => 'offer',
         ]);
     }
+
+    public function test_delete_user_form_uses_data_attribute_and_class_without_inline_onsubmit(): void
+    {
+        $this->seed(DatabaseSeeder::class);
+        $admin = User::where('email', 'admin@hotel.test')->firstOrFail();
+        $customerRole = Role::where('name', Role::CUSTOMER)->firstOrFail();
+
+        $targetUser = User::create([
+            'name' => 'Usuario Objetivo Borrado',
+            'email' => 'objetivo.borrado@hotel.test',
+            'password' => Hash::make('Password123!'),
+            'role_id' => $customerRole->id,
+            'is_active' => true,
+        ]);
+
+        $response = $this->actingAs($admin)->get(route('admin.users.index'));
+        $response->assertOk();
+        $response->assertSee('js-delete-user-form');
+        $response->assertSee('data-user-name="' . e($targetUser->name) . '"', false);
+        $response->assertDontSee('onsubmit="return confirm(', false);
+    }
+
+    public function test_supplier_cannot_submit_offer_for_closed_hotel_need(): void
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        $admin = User::where('email', 'admin@hotel.test')->firstOrFail();
+        $supplierRole = Role::where('name', Role::SUPPLIER)->firstOrFail();
+        $supplier = User::create([
+            'name' => 'Proveedor Oferta Cerrada',
+            'email' => 'proveedor.cerrada@hotel.test',
+            'password' => Hash::make('Password123!'),
+            'role_id' => $supplierRole->id,
+            'is_active' => true,
+        ]);
+
+        $closedNeed = Supply::create([
+            'name' => 'Necesidad Cerrada Test',
+            'item_type' => 'need',
+            'quantity' => 25,
+            'supplier_id' => $admin->id,
+            'status' => 'closed',
+        ]);
+
+        $response = $this->actingAs($supplier)
+            ->from(route('suppliers.dashboard'))
+            ->post(route('suppliers.supplies.store'), [
+                'hotel_need_id' => $closedNeed->id,
+                'name' => 'Oferta Invalida Necesidad Cerrada',
+                'quantity' => 25,
+            ]);
+
+        $response->assertRedirect(route('suppliers.dashboard'));
+        $response->assertSessionHasErrors('hotel_need_id');
+        $this->assertDatabaseMissing('supplies', [
+            'name' => 'Oferta Invalida Necesidad Cerrada',
+        ]);
+    }
+
+    public function test_deactivated_authenticated_user_cannot_access_dashboard(): void
+    {
+        $this->seed(DatabaseSeeder::class);
+        $customerRole = Role::where('name', Role::CUSTOMER)->firstOrFail();
+
+        $user = User::create([
+            'name' => 'Usuario Activo Luego Desactivado',
+            'email' => 'cambia.estado@hotel.test',
+            'password' => Hash::make('Password123!'),
+            'role_id' => $customerRole->id,
+            'is_active' => true,
+        ]);
+
+        $this->actingAs($user)->get('/dashboard')->assertOk();
+
+        $user->update(['is_active' => false]);
+
+        $response = $this->actingAs($user)->get('/dashboard');
+        $response->assertRedirect(route('login'));
+        $this->assertGuest();
+    }
 }

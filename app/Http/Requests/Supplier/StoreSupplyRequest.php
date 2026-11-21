@@ -20,7 +20,10 @@ class StoreSupplyRequest extends FormRequest
             'hotel_need_id' => [
                 'nullable',
                 'integer',
-                Rule::exists('supplies', 'id')->where(fn ($query) => $query->where('item_type', 'need')),
+                Rule::exists('supplies', 'id')->where(function ($query) {
+                    $query->where('item_type', 'need')
+                        ->where('status', 'open');
+                }),
             ],
             'unit_price' => ['nullable', 'numeric', 'min:0', 'max:999999.99'],
             'notes' => ['nullable', 'string', 'max:500'],
@@ -35,7 +38,7 @@ class StoreSupplyRequest extends FormRequest
             'quantity.required' => 'La cantidad disponible es obligatoria.',
             'quantity.integer' => 'La cantidad debe ser un numero entero.',
             'quantity.min' => 'La cantidad debe ser al menos 1.',
-            'hotel_need_id.exists' => 'La necesidad del hotel seleccionada no es valida.',
+            'hotel_need_id.exists' => 'Solo puedes presentar ofertas sobre necesidades abiertas del hotel.',
             'unit_price.numeric' => 'El precio unitario debe ser un numero valido.',
             'unit_price.min' => 'El precio unitario no puede ser negativo.',
         ];

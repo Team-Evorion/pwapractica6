@@ -7,6 +7,7 @@ use App\Models\Supply;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,24 +15,27 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(RoleSeeder::class);
 
-        $adminRole = Role::where('name', Role::ADMINISTRATOR)->first();
-        $supplierRole = Role::where('name', Role::SUPPLIER)->first();
+        $adminRole = Role::where('name', Role::ADMINISTRATOR)->first();$supplierRole = Role::where('name', Role::SUPPLIER)->first();
 
         $admin = null;
         if ($adminRole) {
-            $admin = User::firstOrCreate(
-                ['email' => 'admin@hotel.test'],
-                [
-                    'name' => 'Administrador Inicial',
-                    'password' => Hash::make('Admin1234!'),
-                    'role_id' => $adminRole->id,
-                    'is_active' => true,
-                ]
-            );
+            $configuredPassword = env('INITIAL_ADMIN_PASSWORD');$passwordToUse = is_string($configuredPassword) &&$configuredPassword !== ''
+                ? $configuredPassword
+                : (app()->environment(['local', 'testing']) ? Str::password(16) : null);
+
+            if ($passwordToUse !== null) {$admin = User::firstOrCreate(
+                    ['email' => 'admin@hotel.test'],
+                    [
+                        'name' => 'Administrador Inicial',
+                        'password' => Hash::make($passwordToUse),
+                        'role_id' => $adminRole->id,
+                        'is_active' => true,
+                    ]
+                );
+            }
         }
 
-        if ($admin && $supplierRole) {
-            $needs = [
+        if ($admin && $supplierRole) {$needs = [
                 [
                     'name' => 'Juego de sabanas algodon 300 hilos',
                     'quantity' => 50,
@@ -44,7 +48,7 @@ class DatabaseSeeder extends Seeder
                 ],
             ];
 
-            foreach ($needs as $needData) {
+            foreach ($needs as$needData) {
                 Supply::firstOrCreate(
                     [
                         'name' => $needData['name'],

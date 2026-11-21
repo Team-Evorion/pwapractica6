@@ -107,7 +107,7 @@
                                 @endcan
 
                                 @can('delete', $item)
-                                    <form method="POST" action="{{ route('admin.users.destroy', $item) }}" class="d-inline" onsubmit="return confirm('¿Seguro que deseas eliminar al usuario {{ addslashes($item->name) }}?');">
+                                                <form method="POST" action="{{ route('admin.users.destroy', $item) }}" class="d-inline js-delete-user-form" data-user-name="{{ $item->name }}">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-outline-danger">
