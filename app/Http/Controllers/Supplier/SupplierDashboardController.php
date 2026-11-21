@@ -20,7 +20,15 @@ class SupplierDashboardController extends Controller
         $userId = (int) $request->user()->id;
         $search = trim((string) $request->query('search', ''));
 
+        $hotelNeeds = Supply::where('item_type', 'need')
+            ->where('status', 'open')
+            ->withCount('offers')
+            ->orderByDesc('created_at')
+            ->get();
+
         $supplies = Supply::where('supplier_id', $userId)
+            ->where('item_type', '!=', 'need')
+            ->with('hotelNeed')
             ->when($search !== '', function ($query) use ($search) {
                 $query->where('name', 'like', "%{$search}%");
             })
@@ -28,10 +36,16 @@ class SupplierDashboardController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        $totalItems = Supply::where('supplier_id', $userId)->count();
-        $totalUnits = (int) Supply::where('supplier_id', $userId)->sum('quantity');
+        $totalItems = Supply::where('supplier_id', $userId)->where('item_type', '!=', 'need')->count();
+        $totalUnits = (int) Supply::where('supplier_id', $userId)->where('item_type', '!=', 'need')->sum('quantity');
 
-        return view('suppliers.dashboard', compact('supplies', 'search', 'totalItems', 'totalUnits'));
+        return view('suppliers.dashboard', compact(
+            'supplies',
+            'hotelNeeds',
+            'search',
+            'totalItems',
+            'totalUnits'
+        ));
     }
 
     public function store(StoreSupplyRequest $request): RedirectResponse
@@ -39,16 +53,28 @@ class SupplierDashboardController extends Controller
         Gate::authorize('create', Supply::class);
 
         $data = $request->validated();
+        $need = ! empty($data['hotel_need_id'])
+            ? Supply::where('id', $data['hotel_need_id'])->where('item_type', 'need')->first()
+            : null;
 
         Supply::create([
             'name' => $data['name'],
+            'item_type' => $need ? 'offer' : 'supply',
             'quantity' => $data['quantity'],
             'supplier_id' => $request->user()->id,
+            'hotel_need_id' => $need?->id,
+            'unit_price' => $data['unit_price'] ?? null,
+            'status' => $need ? 'offered' : 'open',
+            'notes' => $data['notes'] ?? null,
         ]);
+
+        $message = $need
+            ? "Oferta vinculada a la necesidad \"{$need->name}\" enviada correctamente."
+            : 'Suministro u oferta registrado correctamente.';
 
         return redirect()
             ->route('suppliers.dashboard')
-            ->with('status', 'Suministro u oferta registrado correctamente.');
+            ->with('status', $message);
     }
 
     public function edit(Supply $supply): View
@@ -82,6 +108,6 @@ class SupplierDashboardController extends Controller
 
         return redirect()
             ->route('suppliers.dashboard')
-            ->with('status', 'Registro eliminado de tu catálogo.');
+            ->with('status', 'Registro eliminado de tu catalogo.');
     }
 }

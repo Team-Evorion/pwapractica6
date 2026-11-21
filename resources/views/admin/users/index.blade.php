@@ -134,4 +134,22 @@
         </div>
     @endif
 </div>
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const helperSpan = document.createElement('span');
+    document.querySelectorAll('.js-delete-user-form').forEach((form) => {
+        form.addEventListener('submit', (event) => {
+            const rawName = form.dataset.userName || 'este usuario';
+            helperSpan.textContent = rawName;
+            const safeName = helperSpan.textContent;
+            if (!window.confirm(`¿Seguro que deseas eliminar al usuario ${safeName}?`)) {
+                event.preventDefault();
+            }
+        });
+    });
+});
+</script>
+@endpush
 @endsection

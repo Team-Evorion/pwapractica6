@@ -2,21 +2,28 @@
 
 namespace App\Http\Requests\Supplier;
 
-use App\Models\Supply;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreSupplyRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()?->can('create', Supply::class) ?? false;
+        return $this->user() !== null;
     }
 
     public function rules(): array
     {
         return [
             'name' => ['required', 'string', 'min:2', 'max:255'],
-            'quantity' => ['required', 'integer', 'min:0', 'max:1000000'],
+            'quantity' => ['required', 'integer', 'min:1', 'max:1000000'],
+            'hotel_need_id' => [
+                'nullable',
+                'integer',
+                Rule::exists('supplies', 'id')->where(fn ($query) => $query->where('item_type', 'need')),
+            ],
+            'unit_price' => ['nullable', 'numeric', 'min:0', 'max:999999.99'],
+            'notes' => ['nullable', 'string', 'max:500'],
         ];
     }
 
@@ -26,8 +33,11 @@ class StoreSupplyRequest extends FormRequest
             'name.required' => 'El nombre del suministro u oferta es obligatorio.',
             'name.min' => 'El nombre debe tener al menos 2 caracteres.',
             'quantity.required' => 'La cantidad disponible es obligatoria.',
-            'quantity.integer' => 'La cantidad debe ser un número entero.',
-            'quantity.min' => 'La cantidad no puede ser negativa.',
+            'quantity.integer' => 'La cantidad debe ser un numero entero.',
+            'quantity.min' => 'La cantidad debe ser al menos 1.',
+            'hotel_need_id.exists' => 'La necesidad del hotel seleccionada no es valida.',
+            'unit_price.numeric' => 'El precio unitario debe ser un numero valido.',
+            'unit_price.min' => 'El precio unitario no puede ser negativo.',
         ];
     }
 }

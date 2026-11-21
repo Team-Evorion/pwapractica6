@@ -62,7 +62,7 @@ class UserManagementController extends Controller
             'email' => $data['email'],
             'password' => $data['password'],
             'role_id' => $data['role_id'],
-            'is_active' => $request->boolean('is_active', true),
+            'is_active' => $request->boolean('is_active'),
         ]);
 
         return redirect()

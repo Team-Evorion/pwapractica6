@@ -10,6 +10,9 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class AuthController extends Controller
@@ -21,10 +24,24 @@ class AuthController extends Controller
 
     public function login(LoginRequest $request): RedirectResponse
     {
+        $throttleKey = Str::transliterate(
+            Str::lower((string) $request->input('email')) . '|' . $request->ip()
+        );
+
+        if (RateLimiter::tooManyAttempts($throttleKey, 5)) {
+            $seconds = RateLimiter::availableIn($throttleKey);
+
+            throw ValidationException::withMessages([
+                'email' => ["Demasiados intentos de inicio de sesion. Intenta de nuevo en {$seconds} segundos."],
+            ]);
+        }
+
         $credentials = $request->only('email', 'password');
         $remember = $request->boolean('remember');
 
         if (! Auth::attempt($credentials, $remember)) {
+            RateLimiter::hit($throttleKey, 60);
+
             return back()
                 ->withInput($request->only('email', 'remember'))
                 ->withErrors([
@@ -47,6 +64,7 @@ class AuthController extends Controller
                 ]);
         }
 
+        RateLimiter::clear($throttleKey);
         $request->session()->regenerate();
 
         return redirect()->intended($this->redirectPathFor($user))
@@ -85,7 +103,7 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return redirect()->route('login')
-            ->with('status', 'Has cerrado sesión correctamente.');
+            ->with('status', 'Has cerrado sesion correctamente.');
     }
 
     protected function redirectPathFor(User $user): string
