@@ -2,15 +2,20 @@
 
 namespace Tests\Feature;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ExampleTest extends TestCase
 {
-    public function test_the_application_redirects_guest_to_login(): void
+    use RefreshDatabase;
+
+    public function test_the_application_displays_the_public_hotel_homepage(): void
     {
         $response = $this->get('/');
 
-        $response->assertStatus(302);
-        $response->assertRedirect(route('login'));
+        $response
+            ->assertOk()
+            ->assertSee('Donde cada estancia se siente extraordinaria')
+            ->assertSee('Descubrir habitaciones');
     }
 }

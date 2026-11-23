@@ -8,11 +8,12 @@
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ asset('css/rooms.css') }}" rel="stylesheet">
+    @stack('styles')
 </head>
 <body>
     <nav class="navbar navbar-expand-lg hotel-navbar">
         <div class="container">
-            <a class="navbar-brand" href="{{ route('rooms.index') }}">
+            <a class="navbar-brand" href="{{ route('home') }}">
                 <span class="brand-mark">E</span>
                 <span>Hotel Evorion</span>
             </a>
@@ -21,8 +22,10 @@
             </button>
             <div class="collapse navbar-collapse" id="roomsNavigation">
                 <div class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+                    <a class="nav-link" href="{{ route('home') }}">Inicio</a>
                     <a class="nav-link" href="{{ route('rooms.index') }}">Habitaciones</a>
                     @auth
+                        <a class="nav-link" href="{{ route('dashboard') }}">Mi panel</a>
                         @can('viewAny', \App\Models\Booking::class)
                             <a class="nav-link" href="{{ route('bookings.index') }}">Reservaciones</a>
                         @endcan
