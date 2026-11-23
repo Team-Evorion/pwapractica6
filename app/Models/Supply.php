@@ -11,6 +11,18 @@ class Supply extends Model
 {
     use HasFactory;
 
+    public const TYPE_NEED = 'need';
+
+    public const TYPE_OFFER = 'offer';
+
+    public const TYPE_SUPPLY = 'supply';
+
+    public const STATUS_OPEN = 'open';
+
+    public const STATUS_CLOSED = 'closed';
+
+    public const STATUS_OFFERED = 'offered';
+
     protected $fillable = [
         'name',
         'item_type',

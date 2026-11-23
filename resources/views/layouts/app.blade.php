@@ -62,6 +62,7 @@
                         @endcan
                         @if (auth()->user()->hasRole(\App\Models\Role::ADMINISTRATOR))
                             <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.*') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">Administración</a></li>
+                            <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.supplies.*') ? 'active' : '' }}" href="{{ route('admin.supplies.index') }}">Suministros</a></li>
                         @endif
                         @if (auth()->user()->hasRole(\App\Models\Role::SUPPLIER))
                             <li class="nav-item"><a class="nav-link {{ request()->routeIs('suppliers.*') ? 'active' : '' }}" href="{{ route('suppliers.dashboard') }}">Proveedores</a></li>

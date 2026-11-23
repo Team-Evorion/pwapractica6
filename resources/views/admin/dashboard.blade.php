@@ -47,11 +47,11 @@
         </div>
     </div>
     <div class="col-12 col-sm-6 col-xl-3">
-        <div class="card border-0 shadow-sm rounded-3 h-100">
+        <div class="card border-0 shadow-sm rounded-3 h-100 position-relative">
             <div class="card-body">
-                <div class="dashboard-stat-top"><div class="text-muted small fw-medium">Registros en Suministros</div><span class="dashboard-stat-icon"><i class="bi bi-box-seam"></i></span></div>
+                <div class="dashboard-stat-top"><a href="{{ route('admin.supplies.index') }}" class="stretched-link text-decoration-none text-reset"><span class="text-muted small fw-medium">Registros en Suministros</span></a><span class="dashboard-stat-icon"><i class="bi bi-box-seam"></i></span></div>
                 <div class="h3 fw-bold mt-1 mb-0">{{ $totalSupplies }}</div>
-                <div class="small text-muted mt-2">Necesidades y ofertas registradas</div>
+                <div class="small text-hotel-teal mt-2">Ver necesidades y ofertas <i class="bi bi-arrow-right"></i></div>
             </div>
         </div>
     </div>

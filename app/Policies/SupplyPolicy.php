@@ -27,6 +27,11 @@ class SupplyPolicy
         return $user->hasRole(Role::SUPPLIER);
     }
 
+    public function manageNeeds(User $user): bool
+    {
+        return $user->hasRole(Role::ADMINISTRATOR);
+    }
+
     public function update(User $user, Supply $supply): bool
     {
         return $user->hasRole(Role::SUPPLIER) && (int) $supply->supplier_id === (int) $user->id;
