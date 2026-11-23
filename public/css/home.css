@@ -85,4 +85,6 @@
     .hotel-values div:last-child { border-bottom: 0; }
     .section-heading, .editorial-room-copy { align-items: flex-start; flex-direction: column; }
     .editorial-room-copy .room-rate { text-align: left; }
+    .editorial-room-card img { aspect-ratio: 16 / 10; object-position: center 58%; }
+    .experience-card img { aspect-ratio: 16 / 10; min-height: 0; object-position: center 58%; }
 }

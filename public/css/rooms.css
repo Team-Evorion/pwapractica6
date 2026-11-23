@@ -160,6 +160,7 @@ body {
     aspect-ratio: 16 / 10;
     display: block;
     object-fit: cover;
+    object-position: center 58%;
     width: 100%;
 }
 
@@ -266,9 +267,15 @@ body {
 }
 
 .detail-image {
+    display: block;
+    height: 100%;
+    max-height: 42rem;
+    object-fit: cover;
+    object-position: center;
     border-radius: 1.5rem;
     box-shadow: 0 1.5rem 3rem rgb(15 23 42 / 12%);
     min-height: 24rem;
+    width: 100%;
 }
 
 .detail-panel,
@@ -430,7 +437,12 @@ body {
     }
 
     .detail-image {
-        min-height: 17rem;
+        aspect-ratio: 16 / 10;
+        height: auto;
+        max-height: none;
+        min-height: 0;
+        object-position: center 58%;
+        border-radius: 1rem;
     }
 
     .form-actions {
