@@ -39,4 +39,14 @@ class BookingPolicy
             && $booking->user_id === $user->id
             && $booking->status !== Booking::STATUS_CANCELLED;
     }
+
+    public function viewFinances(User $user): bool
+    {
+        return $user->hasRole(Role::ADMINISTRATOR, Role::HOTEL_MANAGER);
+    }
+
+    public function recordPayment(User $user, Booking $booking): bool
+    {
+        return $user->hasRole(Role::ADMINISTRATOR, Role::HOTEL_MANAGER);
+    }
 }

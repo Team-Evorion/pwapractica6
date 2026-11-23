@@ -111,6 +111,7 @@
                             <th>Habitación</th>
                             <th>Entrada</th>
                             <th>Salida</th>
+                            <th>Total</th>
                             <th>Estado</th>
                             <th class="text-end">Acciones</th>
                         </tr>
@@ -131,6 +132,7 @@
                                 <td>#{{ $booking->room->room_number }}<span class="d-block small text-muted">{{ $booking->room->room_type }}</span></td>
                                 <td>{{ $booking->check_in_date->format('d/m/Y') }}</td>
                                 <td>{{ $booking->check_out_date->format('d/m/Y') }}</td>
+                                <td><strong>${{ number_format($booking->totalAmount(), 2) }}</strong><span class="d-block small text-muted">{{ $booking->nights() }} noche(s)</span></td>
                                 <td><span class="badge {{ $status[1] }}">{{ $status[0] }}</span></td>
                                 <td class="text-end">
                                     <div class="d-inline-flex flex-wrap gap-1 justify-content-end">
@@ -147,7 +149,7 @@
                                 </td>
                             </tr>
                         @empty
-                            <tr><td colspan="{{ $isCustomer ? 5 : 6 }}" class="text-center text-muted py-5">No hay reservaciones con esos criterios.</td></tr>
+                            <tr><td colspan="{{ $isCustomer ? 6 : 7 }}" class="text-center text-muted py-5">No hay reservaciones con esos criterios.</td></tr>
                         @endforelse
                     </tbody>
                 </table>

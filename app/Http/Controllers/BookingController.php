@@ -10,6 +10,7 @@ use App\Models\Room;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
@@ -110,6 +111,11 @@ class BookingController extends Controller
                 'check_in_date' => $validated['check_in_date'],
                 'check_out_date' => $validated['check_out_date'],
                 'status' => Booking::STATUS_PENDING,
+                'nightly_rate' => $room->room_price,
+                'total_amount' => (float) $room->room_price * max(
+                    1,
+                    Carbon::parse($validated['check_in_date'])->diffInDays(Carbon::parse($validated['check_out_date']))
+                ),
             ]);
         });
 

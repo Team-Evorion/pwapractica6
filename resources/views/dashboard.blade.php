@@ -88,6 +88,14 @@
                     </a>
                 @endif
 
+                @can('viewFinances', \App\Models\Booking::class)
+                    <a href="{{ route('finances.index') }}" class="action-card">
+                        <span>Finanzas</span>
+                        <strong>Revisar ingresos y pagos</strong>
+                        <small>Ventas confirmadas, saldos, cobros y ocupación.</small>
+                    </a>
+                @endcan
+
                 @if ($user->hasRole(\App\Models\Role::SUPPLIER))
                     <a href="{{ route('suppliers.dashboard') }}" class="action-card">
                         <span>Proveedores</span>

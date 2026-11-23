@@ -12,6 +12,7 @@ require __DIR__.'/modules/admin.php';
 require __DIR__.'/modules/supplier.php';
 require __DIR__.'/modules/rooms.php';
 require __DIR__.'/modules/bookings.php';
+require __DIR__.'/modules/finances.php';
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

@@ -60,6 +60,9 @@
                         @can('viewAny', \App\Models\Booking::class)
                             <li class="nav-item"><a class="nav-link {{ request()->routeIs('bookings.*') ? 'active' : '' }}" href="{{ route('bookings.index') }}">Reservaciones</a></li>
                         @endcan
+                        @can('viewFinances', \App\Models\Booking::class)
+                            <li class="nav-item"><a class="nav-link {{ request()->routeIs('finances.*') ? 'active' : '' }}" href="{{ route('finances.index') }}">Finanzas</a></li>
+                        @endcan
                         @if (auth()->user()->hasRole(\App\Models\Role::ADMINISTRATOR))
                             <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.*') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">Administración</a></li>
                             <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.supplies.*') ? 'active' : '' }}" href="{{ route('admin.supplies.index') }}">Suministros</a></li>
