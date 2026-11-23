@@ -64,7 +64,8 @@ class RoomController extends Controller
         $data = $request->safe()->except('image');
 
         if ($request->hasFile('image')) {
-            $data['image_path'] = 'storage/'.$request->file('image')->store('rooms', 'public');
+            $storedPath = $request->file('image')->store('rooms', 'public');
+            $data['image_path'] = $this->publicImagePath($storedPath);
         }
 
         $room = Room::create($data);
@@ -101,7 +102,7 @@ class RoomController extends Controller
 
         if ($request->hasFile('image')) {
             $newStoredPath = $request->file('image')->store('rooms', 'public');
-            $data['image_path'] = 'storage/'.$newStoredPath;
+            $data['image_path'] = $this->publicImagePath($newStoredPath);
         }
 
         try {
@@ -179,10 +180,22 @@ class RoomController extends Controller
 
     private function deleteUploadedImage(?string $imagePath): void
     {
-        if ($imagePath === null || ! str_starts_with($imagePath, 'storage/')) {
+        $prefix = $this->publicImagePrefix();
+
+        if ($imagePath === null || ! str_starts_with($imagePath, $prefix)) {
             return;
         }
 
-        Storage::disk('public')->delete(substr($imagePath, strlen('storage/')));
+        Storage::disk('public')->delete(substr($imagePath, strlen($prefix)));
+    }
+
+    private function publicImagePath(string $storedPath): string
+    {
+        return $this->publicImagePrefix().ltrim($storedPath, '/');
+    }
+
+    private function publicImagePrefix(): string
+    {
+        return trim((string) config('filesystems.disks.public.relative_url', 'storage'), '/').'/';
     }
 }

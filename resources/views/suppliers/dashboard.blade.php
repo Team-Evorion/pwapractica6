@@ -220,7 +220,7 @@
                                         @endcan
 
                                         @can('delete', $supply)
-                                            <form method="POST" action="{{ route('suppliers.supplies.destroy', $supply) }}" class="d-inline" onsubmit="return confirm('Eliminar este registro de tu catalogo?');">
+                                            <form method="POST" action="{{ route('suppliers.supplies.destroy', $supply) }}" class="d-inline js-delete-supply-form">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-sm btn-outline-danger">
@@ -251,3 +251,15 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    document.querySelectorAll('.js-delete-supply-form').forEach((form) => {
+        form.addEventListener('submit', (event) => {
+            if (!window.confirm('¿Eliminar este registro de tu catálogo?')) {
+                event.preventDefault();
+            }
+        });
+    });
+</script>
+@endpush

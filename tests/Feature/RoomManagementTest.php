@@ -190,6 +190,7 @@ class RoomManagementTest extends TestCase
     public function test_hotel_manager_can_upload_replace_and_delete_a_room_image(): void
     {
         Storage::fake('public');
+        config(['filesystems.disks.public.relative_url' => 'uploads']);
 
         $manager = $this->userWithRole(Role::HOTEL_MANAGER);
 
@@ -201,7 +202,8 @@ class RoomManagementTest extends TestCase
             ->assertRedirectToRoute('rooms.manage');
 
         $room = Room::where('room_number', 1101)->sole();
-        $firstPath = substr($room->image_path, strlen('storage/'));
+        $this->assertStringStartsWith('uploads/', $room->image_path);
+        $firstPath = substr($room->image_path, strlen('uploads/'));
         Storage::disk('public')->assertExists($firstPath);
 
         $this->put(route('rooms.update', $room), $this->validPayload([
@@ -210,7 +212,8 @@ class RoomManagementTest extends TestCase
         ]))->assertRedirectToRoute('rooms.manage');
 
         $room->refresh();
-        $replacementPath = substr($room->image_path, strlen('storage/'));
+        $this->assertStringStartsWith('uploads/', $room->image_path);
+        $replacementPath = substr($room->image_path, strlen('uploads/'));
         Storage::disk('public')->assertMissing($firstPath);
         Storage::disk('public')->assertExists($replacementPath);
 

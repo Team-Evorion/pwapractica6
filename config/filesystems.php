@@ -1,5 +1,11 @@
 <?php
 
+$publicFilesRoot = trim((string) env('PUBLIC_FILES_ROOT', 'storage/app/public'), '/\\');
+$publicFilesUrl = trim((string) env('PUBLIC_FILES_URL', 'storage'), '/');
+
+$publicFilesRoot = $publicFilesRoot !== '' ? $publicFilesRoot : 'storage/app/public';
+$publicFilesUrl = $publicFilesUrl !== '' ? $publicFilesUrl : 'storage';
+
 return [
 
     /*
@@ -40,8 +46,9 @@ return [
 
         'public' => [
             'driver' => 'local',
-            'root' => storage_path('app/public'),
-            'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/storage',
+            'root' => base_path($publicFilesRoot),
+            'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/'.$publicFilesUrl,
+            'relative_url' => $publicFilesUrl,
             'visibility' => 'public',
             'throw' => false,
             'report' => false,
@@ -74,7 +81,7 @@ return [
     */
 
     'links' => [
-        public_path('storage') => storage_path('app/public'),
+        public_path($publicFilesUrl) => base_path($publicFilesRoot),
     ],
 
 ];

@@ -297,6 +297,20 @@ La aplicación estará disponible normalmente en:
 http://127.0.0.1:8000
 ```
 
+### Ajustes para hosting compartido
+
+Si el alojamiento no permite crear el enlace simbólico `public/storage`, configura una carpeta pública real para las fotografías:
+
+```env
+APP_ENV=production
+APP_DEBUG=false
+SESSION_SECURE_COOKIE=true
+PUBLIC_FILES_ROOT=uploads
+PUBLIC_FILES_URL=uploads
+```
+
+La carpeta `uploads` se crea automáticamente al guardar la primera fotografía. En una instalación local se conservan los valores predeterminados `storage/app/public` y `storage`.
+
 ---
 
 ## 🔑 Acceso de demostración
