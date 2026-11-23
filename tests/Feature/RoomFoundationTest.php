@@ -60,14 +60,16 @@ class RoomFoundationTest extends TestCase
         $this->seed(RoomSeeder::class);
         $this->seed(RoomSeeder::class);
 
-        $this->assertDatabaseCount('rooms', 8);
+        $this->assertDatabaseCount('rooms', 16);
         $this->assertDatabaseHas('rooms', [
-            'room_number' => 301,
+            'room_number' => 401,
             'room_type' => 'Suite',
-            'room_price' => '140.00',
+            'room_price' => '125.00',
             'is_available' => true,
             'image_path' => 'images/rooms/room-suite.webp',
         ]);
+        $this->assertSame(14, Room::where('is_available', true)->count());
+        $this->assertSame(2, Room::where('is_available', false)->count());
         $this->assertFileExists(public_path('images/rooms/room-suite.webp'));
     }
 }

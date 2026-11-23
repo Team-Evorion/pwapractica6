@@ -49,6 +49,6 @@ class DashboardPresentationTest extends TestCase
     {
         $this->seed(RoomSeeder::class);
 
-        $this->assertSame('240.00', Room::where('room_number', 402)->value('room_price'));
+        $this->assertSame('145.00', Room::where('room_number', 402)->value('room_price'));
     }
 }
