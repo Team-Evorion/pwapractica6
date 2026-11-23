@@ -19,6 +19,10 @@ body {
     font-family: Inter, 'Segoe UI', sans-serif;
 }
 
+.rooms-surface {
+    background: #d7dfdc;
+}
+
 .app-nav,
 .hotel-navbar.app-nav {
     min-height: 76px;
@@ -136,11 +140,11 @@ body {
 
 .catalog-hero {
     padding: 4.5rem 0 6.5rem;
-    border-bottom: 1px solid #dbe9e5;
+    border-bottom: 1px solid #cbd9d4;
     color: var(--ev-ink);
     background:
-        radial-gradient(circle at 84% 12%, rgba(45, 212, 191, .2), transparent 26rem),
-        linear-gradient(115deg, #ffffff, #f2faf8);
+        radial-gradient(circle at 84% 12%, rgba(15, 118, 110, .24), transparent 26rem),
+        linear-gradient(115deg, #c9d9d4, #dce6e2);
 }
 
 .catalog-hero .eyebrow { color: var(--ev-brand); }
@@ -150,6 +154,7 @@ body {
 
 .room-card {
     border-color: var(--ev-line);
+    background: #fdfdfc;
     box-shadow: var(--ev-shadow);
 }
 

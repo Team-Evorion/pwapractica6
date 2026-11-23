@@ -12,7 +12,7 @@
     <link href="{{ asset('css/evorion-ui.css') }}" rel="stylesheet">
     @stack('styles')
 </head>
-<body>
+<body class="rooms-surface">
     @php($me = auth()->user())
     <nav class="navbar navbar-expand-lg hotel-navbar app-nav sticky-top" aria-label="Navegación principal">
         <div class="container-xl">
