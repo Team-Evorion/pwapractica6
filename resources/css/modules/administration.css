@@ -1,0 +1,34 @@
+.admin-header-bar {
+    background-color: #FFFFFF;
+    border-left: 4px solid #0F766E;
+}
+
+.role-pill {
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+.role-pill-administrator {
+    background-color: #0F172A;
+    color: #FFFFFF;
+}
+
+.role-pill-hotel-manager {
+    background-color: #0F766E;
+    color: #FFFFFF;
+}
+
+.role-pill-receptionist {
+    background-color: #E2E8F0;
+    color: #0F172A;
+}
+
+.role-pill-customer {
+    background-color: #CCFBF1;
+    color: #115E59;
+}
+
+.role-pill-supplier {
+    background-color: #FEF3C7;
+    color: #92400E;
+}
