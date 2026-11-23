@@ -44,6 +44,11 @@ class User extends Authenticatable
         return $this->hasMany(Supply::class, 'supplier_id');
     }
 
+    public function bookings(): HasMany
+    {
+        return $this->hasMany(Booking::class);
+    }
+
     public function hasRole(string ...$roles): bool
     {
         return $this->role !== null && in_array($this->role->name, $roles, true);

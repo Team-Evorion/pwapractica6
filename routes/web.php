@@ -6,4 +6,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+require __DIR__.'/modules/auth.php';
 require __DIR__.'/modules/rooms.php';
+require __DIR__.'/modules/bookings.php';

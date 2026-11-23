@@ -22,6 +22,16 @@
             <div class="collapse navbar-collapse" id="roomsNavigation">
                 <div class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
                     <a class="nav-link" href="{{ route('rooms.index') }}">Habitaciones</a>
+                    @auth
+                        <a class="nav-link" href="{{ route('bookings.index') }}">Mis reservas</a>
+                        <span class="navbar-text text-white-50 px-lg-2">{{ auth()->user()->name }}</span>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button class="btn btn-sm btn-outline-light" type="submit">Cerrar sesión</button>
+                        </form>
+                    @else
+                        <a class="btn btn-sm btn-light ms-lg-2" href="{{ route('login') }}">Iniciar sesión</a>
+                    @endauth
                     @can('viewAny', \App\Models\Room::class)
                         <a class="btn btn-sm btn-light ms-lg-2" href="{{ route('rooms.manage') }}">Administrar</a>
                     @endcan
