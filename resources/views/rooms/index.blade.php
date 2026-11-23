@@ -29,7 +29,7 @@
                 </div>
                 <div class="col-6 col-md-3">
                     <label class="form-label" for="max_price">Precio máximo</label>
-                    <input class="form-control" id="max_price" name="max_price" type="number" min="0" step="0.01" value="{{ $filters['max_price'] ?? '' }}" placeholder="$500">
+                    <input class="form-control" id="max_price" name="max_price" type="number" min="0" step="0.01" value="{{ $filters['max_price'] ?? '' }}" placeholder="$300">
                 </div>
                 <div class="col-12 col-md-2 d-grid">
                     <button class="btn btn-hotel" type="submit">Buscar</button>

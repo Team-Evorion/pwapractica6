@@ -30,7 +30,7 @@
                     <option value="">Todos los roles</option>
                     @foreach ($roles as $role)
                         <option value="{{ $role->id }}" @selected((string) $roleFilter === (string) $role->id)>
-                            {{ $role->name }}
+                            {{ $role->display_name }}
                         </option>
                     @endforeach
                 </select>
@@ -80,7 +80,7 @@
                         <td>{{ $item->email }}</td>
                         <td>
                             <span class="badge role-pill role-pill-{{ $slug }}">
-                                {{ $item->role?->name ?? 'Sin rol' }}
+                                {{ $item->role?->display_name ?? 'Sin rol' }}
                             </span>
                         </td>
                         <td>

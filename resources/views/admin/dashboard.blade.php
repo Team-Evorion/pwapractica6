@@ -66,7 +66,7 @@
             <div class="card-body">
                 @forelse ($roleDistribution as $roleItem)
                     <div class="d-flex justify-content-between align-items-center py-2 {{ !$loop->last ? 'border-bottom' : '' }}">
-                        <span class="fw-medium">{{ $roleItem->name }}</span>
+                        <span class="fw-medium">{{ $roleItem->display_name }}</span>
                         <span class="badge bg-dark rounded-pill">{{ $roleItem->users_count }}</span>
                     </div>
                 @empty
@@ -97,7 +97,7 @@
                                     <div class="fw-medium">{{ $recent->name }}</div>
                                     <div class="small text-muted">{{ $recent->email }}</div>
                                 </td>
-                                <td><span class="badge bg-secondary">{{ $recent->role?->name ?? 'N/A' }}</span></td>
+                                <td><span class="badge bg-secondary">{{ $recent->role?->display_name ?? 'Sin rol' }}</span></td>
                                 <td>
                                     @if ($recent->is_active)
                                         <span class="badge bg-success-subtle text-success border border-success-subtle">Activo</span>

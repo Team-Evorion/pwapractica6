@@ -43,7 +43,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark navbar-hotel shadow-sm">
         <div class="container">
             <a class="navbar-brand fw-semibold" href="{{ url('/') }}">
-                Grand Horizon Hotel
+                Hotel Evorion
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Alternar navegación">
                 <span class="navbar-toggler-icon"></span>
@@ -53,7 +53,7 @@
                     @auth
                         <li class="nav-item">
                             <span class="badge bg-light text-dark">
-                                {{ auth()->user()->name }} ({{ auth()->user()->role?->name ?? 'Sin rol' }})
+                                {{ auth()->user()->name }} ({{ auth()->user()->role?->display_name ?? 'Sin rol' }})
                             </span>
                         </li>
                         <li class="nav-item">

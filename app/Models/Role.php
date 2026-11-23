@@ -24,6 +24,18 @@ class Role extends Model
         'name',
     ];
 
+    public function getDisplayNameAttribute(): string
+    {
+        return match ($this->name) {
+            self::ADMINISTRATOR => 'Administrador',
+            self::HOTEL_MANAGER => 'Gerente del hotel',
+            self::RECEPTIONIST => 'Recepcionista',
+            self::CUSTOMER => 'Cliente',
+            self::SUPPLIER => 'Proveedor',
+            default => $this->name,
+        };
+    }
+
     public function users(): HasMany
     {
         return $this->hasMany(User::class, 'role_id');

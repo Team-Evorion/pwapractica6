@@ -38,7 +38,7 @@
                                 <option value="">Selecciona un rol...</option>
                                 @foreach ($roles as $role)
                                     <option value="{{ $role->id }}" @selected((string) old('role_id') === (string) $role->id)>
-                                        {{ $role->name }}
+                                        {{ $role->display_name }}
                                     </option>
                                 @endforeach
                             </select>

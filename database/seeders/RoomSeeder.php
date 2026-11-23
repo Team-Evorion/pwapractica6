@@ -15,9 +15,9 @@ class RoomSeeder extends Seeder
             [201, 'Doble', '75.00', 2, 'images/rooms/room-doble.webp'],
             [202, 'Doble', '75.00', 2, 'images/rooms/room-doble.webp'],
             [301, 'Suite', '140.00', 3, 'images/rooms/room-suite.webp'],
-            [302, 'Suite', '165.00', 4, 'images/rooms/room-suite.webp'],
+            [302, 'Suite', '175.00', 4, 'images/rooms/room-suite.webp'],
             [401, 'Familiar', '190.00', 5, 'images/rooms/room-familiar.webp'],
-            [402, 'Familiar', '210.00', 6, 'images/rooms/room-familiar.webp'],
+            [402, 'Familiar', '240.00', 6, 'images/rooms/room-familiar.webp'],
         ];
 
         foreach ($rooms as [$number, $type, $price, $capacity, $imagePath]) {

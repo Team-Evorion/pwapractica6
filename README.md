@@ -32,7 +32,7 @@ El administrador inicial usa `admin@hotel.test` y la contraseña definida en `IN
 php artisan test
 ```
 
-La integración final fue comprobada tanto con SQLite de pruebas como con MariaDB/MySQL: 31 pruebas y 135 aserciones aprobadas.
+La integración base fue comprobada tanto con SQLite como con MariaDB/MySQL. Después de los ajustes de presentación, la suite local contiene 34 pruebas y 142 aserciones.
 
 ## Roles
 

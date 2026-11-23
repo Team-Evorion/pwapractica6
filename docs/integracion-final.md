@@ -33,7 +33,7 @@ Las rutas privadas usan autenticación y comprobación de cuenta activa. Las reg
 - Análisis de sintaxis PHP: aprobado.
 - Compilación de vistas Blade: aprobada.
 - Carga de 31 rutas: aprobada.
-- SQLite: 31 pruebas, 135 aserciones aprobadas.
+- SQLite: 34 pruebas, 142 aserciones aprobadas tras los ajustes finales.
 - MariaDB 10.4.32: migración limpia, seed y 31 pruebas, 135 aserciones aprobadas.
 - Datos del seed: 5 roles, 1 administrador, 8 habitaciones y 2 necesidades abiertas.
 - Revisión responsive: 360 px, 768 px y 1280 px sin desbordamiento horizontal.

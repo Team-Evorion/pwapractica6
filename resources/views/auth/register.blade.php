@@ -8,7 +8,7 @@
         <div class="card border-0 shadow-sm rounded-3">
             <div class="card-body p-4 p-md-5">
                 <h1 class="h4 fw-bold mb-1">Crear cuenta de huésped</h1>
-                <p class="text-muted small mb-4">El registro público crea automáticamente una cuenta con rol <strong>Customer</strong>.</p>
+                <p class="text-muted small mb-4">El registro público crea automáticamente una cuenta con rol <strong>Cliente</strong>.</p>
 
                 <form method="POST" action="{{ route('register.store') }}" novalidate>
                     @csrf
