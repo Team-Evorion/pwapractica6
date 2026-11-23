@@ -12,6 +12,7 @@ use App\Policies\SupplyPolicy;
 use App\Policies\UserPolicy;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,6 +24,8 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        Schema::defaultStringLength(191);
+
         Gate::policy(Booking::class, BookingPolicy::class);
         Gate::policy(Room::class, RoomPolicy::class);
         Paginator::useBootstrapFive();
