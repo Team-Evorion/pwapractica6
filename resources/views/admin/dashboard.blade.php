@@ -22,7 +22,7 @@
     <div class="col-12 col-sm-6 col-xl-3">
         <div class="card border-0 shadow-sm rounded-3 h-100">
             <div class="card-body">
-                <div class="text-muted small fw-medium">Usuarios Registrados</div>
+                <div class="dashboard-stat-top"><div class="text-muted small fw-medium">Usuarios Registrados</div><span class="dashboard-stat-icon"><i class="bi bi-people"></i></span></div>
                 <div class="h3 fw-bold mt-1 mb-0">{{ $totalUsers }}</div>
                 <div class="small text-hotel-teal mt-2">{{ $activeUsers }} activos &middot; {{ $inactiveUsers }} inactivos</div>
             </div>
@@ -31,7 +31,7 @@
     <div class="col-12 col-sm-6 col-xl-3">
         <div class="card border-0 shadow-sm rounded-3 h-100">
             <div class="card-body">
-                <div class="text-muted small fw-medium">Habitaciones Operativas</div>
+                <div class="dashboard-stat-top"><div class="text-muted small fw-medium">Habitaciones Operativas</div><span class="dashboard-stat-icon"><i class="bi bi-door-open"></i></span></div>
                 <div class="h3 fw-bold mt-1 mb-0">{{ $hotelSummary['available_rooms'] }} / {{ $hotelSummary['total_rooms'] }}</div>
                 <div class="small text-muted mt-2">{{ $hotelSummary['maintenance_rooms'] }} fuera de servicio</div>
             </div>
@@ -40,7 +40,7 @@
     <div class="col-12 col-sm-6 col-xl-3">
         <div class="card border-0 shadow-sm rounded-3 h-100">
             <div class="card-body">
-                <div class="text-muted small fw-medium">Reservaciones Activas</div>
+                <div class="dashboard-stat-top"><div class="text-muted small fw-medium">Reservaciones Activas</div><span class="dashboard-stat-icon"><i class="bi bi-calendar2-check"></i></span></div>
                 <div class="h3 fw-bold mt-1 mb-0">{{ $hotelSummary['active_reservations'] }}</div>
                 <div class="small text-muted mt-2">{{ $hotelSummary['checkins_today'] }} check-ins hoy &middot; {{ $hotelSummary['checkouts_today'] }} check-outs</div>
             </div>
@@ -49,7 +49,7 @@
     <div class="col-12 col-sm-6 col-xl-3">
         <div class="card border-0 shadow-sm rounded-3 h-100">
             <div class="card-body">
-                <div class="text-muted small fw-medium">Registros en Suministros</div>
+                <div class="dashboard-stat-top"><div class="text-muted small fw-medium">Registros en Suministros</div><span class="dashboard-stat-icon"><i class="bi bi-box-seam"></i></span></div>
                 <div class="h3 fw-bold mt-1 mb-0">{{ $totalSupplies }}</div>
                 <div class="small text-muted mt-2">Necesidades y ofertas registradas</div>
             </div>

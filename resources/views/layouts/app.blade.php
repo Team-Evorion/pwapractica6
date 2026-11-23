@@ -6,6 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Sistema de Reservas de Hotel')</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <style>
         :root {
             --hotel-teal: #0F766E;
@@ -37,69 +38,50 @@
             color: var(--hotel-teal);
         }
     </style>
+    <link href="{{ asset('css/evorion-ui.css') }}" rel="stylesheet">
     @stack('styles')
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark navbar-hotel shadow-sm">
-        <div class="container">
-            <a class="navbar-brand fw-semibold" href="{{ url('/') }}">
-                Hotel Evorion
+    @php($me = auth()->user())
+    <nav class="navbar navbar-expand-lg app-nav sticky-top" aria-label="Navegación principal">
+        <div class="container-xl">
+            <a class="navbar-brand app-brand" href="{{ route('home') }}">
+                <span class="brand-mark">E</span> Hotel&nbsp;<span class="brand-accent">Evorion</span>
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Alternar navegación">
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Alternar navegación">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="mainNavbar">
-                <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
+                <ul class="navbar-nav ms-lg-5 me-auto gap-lg-2">
+                    <li class="nav-item"><a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link {{ request()->routeIs('rooms.*') ? 'active' : '' }}" href="{{ route('rooms.index') }}">Habitaciones</a></li>
                     @auth
-                        <li class="nav-item">
-                            <span class="badge bg-light text-dark">
-                                {{ auth()->user()->name }} ({{ auth()->user()->role?->display_name ?? 'Sin rol' }})
-                            </span>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('dashboard') }}">Inicio</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('rooms.index') }}">Habitaciones</a>
-                        </li>
+                        <li class="nav-item"><a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">Mi panel</a></li>
                         @can('viewAny', \App\Models\Booking::class)
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('bookings.index') }}">Reservaciones</a>
-                            </li>
+                            <li class="nav-item"><a class="nav-link {{ request()->routeIs('bookings.*') ? 'active' : '' }}" href="{{ route('bookings.index') }}">Reservaciones</a></li>
                         @endcan
                         @if (auth()->user()->hasRole(\App\Models\Role::ADMINISTRATOR))
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('admin.dashboard') }}">Panel Admin</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('admin.users.index') }}">Usuarios</a>
-                            </li>
+                            <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.*') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">Administración</a></li>
                         @endif
                         @if (auth()->user()->hasRole(\App\Models\Role::SUPPLIER))
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('suppliers.dashboard') }}">Proveedores</a>
-                            </li>
+                            <li class="nav-item"><a class="nav-link {{ request()->routeIs('suppliers.*') ? 'active' : '' }}" href="{{ route('suppliers.dashboard') }}">Proveedores</a></li>
                         @endif
-                        <li class="nav-item">
-                            <form method="POST" action="{{ route('logout') }}" class="d-inline">
-                                @csrf
-                                <button type="submit" class="btn btn-outline-light btn-sm">Cerrar sesión</button>
-                            </form>
-                        </li>
-                    @else
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">Iniciar sesión</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="btn btn-hotel btn-sm" href="{{ route('register') }}">Registrarse</a>
-                        </li>
                     @endauth
                 </ul>
+                <div class="d-flex align-items-lg-center flex-wrap gap-2 mt-3 mt-lg-0">
+                    @auth
+                        <span class="account-chip"><i class="bi bi-person-circle"></i> {{ $me->name }} <small>· {{ $me->role?->display_name ?? 'Sin rol' }}</small></span>
+                        <form method="POST" action="{{ route('logout') }}">@csrf<button type="submit" class="btn btn-soft btn-sm">Salir</button></form>
+                    @else
+                        <a class="btn btn-soft btn-sm" href="{{ route('login') }}">Iniciar sesión</a>
+                        <a class="btn btn-hotel btn-sm" href="{{ route('register') }}">Crear cuenta</a>
+                    @endauth
+                </div>
             </div>
         </div>
     </nav>
 
-    <main class="container py-4 flex-grow-1">
+    <main class="container-xl page-wrap flex-grow-1">
         @if (session('status'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session('status') }}
@@ -117,9 +99,10 @@
         @yield('content')
     </main>
 
-    <footer class="bg-white border-top py-3 mt-auto">
-        <div class="container text-center text-muted small">
-            Hotel Evorion &mdash; Habitaciones, reservaciones y servicios integrados
+    <footer class="app-footer mt-auto">
+        <div class="container-xl d-flex flex-column flex-md-row justify-content-between gap-2">
+            <span><span class="footer-mark">E</span> Hotel Evorion</span>
+            <small>Sistema de reservas · Proyecto universitario</small>
         </div>
     </footer>
 

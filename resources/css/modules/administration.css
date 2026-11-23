@@ -1,6 +1,15 @@
 .admin-header-bar {
-    background-color: #FFFFFF;
+    overflow: hidden;
+    border: 1px solid #dbe9e5;
     border-left: 4px solid #0F766E;
+    background:
+        radial-gradient(circle at 88% 15%, rgba(45, 212, 191, .18), transparent 14rem),
+        linear-gradient(110deg, #ffffff, #f3faf8);
+}
+
+.admin-header-bar h1 {
+    color: #0F172A;
+    letter-spacing: -.03em;
 }
 
 .role-pill {
