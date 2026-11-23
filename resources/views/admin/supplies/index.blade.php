@@ -16,7 +16,7 @@
     <a href="{{ route('admin.dashboard') }}" class="btn btn-soft"><i class="bi bi-arrow-left me-1"></i> Volver al panel</a>
 </div>
 
-<div class="row g-3 mb-4">
+<div class="row g-3 mb-4 supply-stats-grid">
     @foreach ([
         ['label' => 'Registros totales', 'value' => $summary['total'], 'icon' => 'collection'],
         ['label' => 'Necesidades abiertas', 'value' => $summary['open_needs'], 'icon' => 'clipboard-check'],
@@ -33,7 +33,7 @@
     @endforeach
 </div>
 
-<div class="row g-4 align-items-start">
+<div class="row g-4 align-items-start supplies-layout">
     <div class="col-12 col-xl-4">
         <section class="card rounded-4 sticky-xl-top supply-create-card">
             <div class="card-body p-4">

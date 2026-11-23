@@ -31,6 +31,11 @@
 .supply-stat > span:last-child { margin-top: .4rem; color: #6b7280; font-size: .82rem; }
 .supply-create-card { top: 96px; }
 
+.supplies-layout > [class*="col-"],
+.supply-stats-grid > [class*="col-"] {
+    min-width: 0;
+}
+
 .supply-table thead th {
     padding: .9rem 1rem;
     border-bottom: 1px solid #e5e2dc;
@@ -75,10 +80,67 @@
 
 @media (max-width: 1199.98px) {
     .supply-create-card { position: static !important; }
+
+    .supplies-layout {
+        display: block;
+    }
+
+    .supplies-layout > [class*="col-"] {
+        width: 100%;
+    }
+
+    .supplies-layout > [class*="col-"] + [class*="col-"] {
+        margin-top: 1.5rem;
+    }
 }
 
 @media (max-width: 575.98px) {
+    .supplies-heading {
+        align-items: stretch;
+        gap: 1rem;
+    }
+
+    .supplies-heading .btn {
+        width: 100%;
+    }
+
+    .supply-stats-grid,
+    .supplies-layout {
+        margin-right: 0;
+        margin-left: 0;
+    }
+
+    .supply-stats-grid > [class*="col-"],
+    .supplies-layout > [class*="col-"] {
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+    .supply-stats-grid {
+        gap: .75rem;
+    }
+
+    .supply-stats-grid > [class*="col-"] {
+        width: calc(50% - .375rem);
+    }
+
     .supply-stat { min-height: 125px; padding: 1rem; }
+
+    .supply-create-card .card-body {
+        padding: 1.1rem !important;
+    }
+
+    .supply-create-card .dashboard-stat-icon {
+        flex: 0 0 auto;
+    }
+
+    .supply-create-card textarea.form-control {
+        min-height: 108px;
+    }
+
+    .supply-create-card .btn-hotel {
+        min-height: 48px;
+    }
 
     .supply-table,
     .supply-table tbody,
