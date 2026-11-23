@@ -23,7 +23,15 @@
                 <div class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
                     <a class="nav-link" href="{{ route('rooms.index') }}">Habitaciones</a>
                     @auth
-                        <a class="nav-link" href="{{ route('bookings.index') }}">Mis reservas</a>
+                        @can('viewAny', \App\Models\Booking::class)
+                            <a class="nav-link" href="{{ route('bookings.index') }}">Reservaciones</a>
+                        @endcan
+                        @if (auth()->user()->hasRole(\App\Models\Role::ADMINISTRATOR))
+                            <a class="nav-link" href="{{ route('admin.dashboard') }}">Administración</a>
+                        @endif
+                        @if (auth()->user()->hasRole(\App\Models\Role::SUPPLIER))
+                            <a class="nav-link" href="{{ route('suppliers.dashboard') }}">Proveedores</a>
+                        @endif
                         <span class="navbar-text text-white-50 px-lg-2">{{ auth()->user()->name }}</span>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
@@ -45,6 +53,14 @@
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session('status') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+            </div>
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <div class="container pt-3">
+            <div class="alert alert-danger" role="alert">
+                {{ $errors->first() }}
             </div>
         </div>
     @endif

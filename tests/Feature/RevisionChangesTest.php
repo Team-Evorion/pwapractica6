@@ -124,7 +124,7 @@ class RevisionChangesTest extends TestCase
         $response = $this->actingAs($admin)->get(route('admin.users.index'));
         $response->assertOk();
         $response->assertSee('js-delete-user-form');
-        $response->assertSee('data-user-name="' . e($targetUser->name) . '"', false);
+        $response->assertSee('data-user-name="'.e($targetUser->name).'"', false);
         $response->assertDontSee('onsubmit="return confirm(', false);
     }
 

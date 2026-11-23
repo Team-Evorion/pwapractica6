@@ -9,4 +9,7 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/bookings', [BookingController::class, 'store'])
         ->name('bookings.store');
+
+    Route::patch('/bookings/{booking}/status', [BookingController::class, 'updateStatus'])
+        ->name('bookings.status.update');
 });

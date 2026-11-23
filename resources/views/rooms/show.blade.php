@@ -33,6 +33,7 @@
                     <p class="detail-price"><strong>${{ number_format((float) $room->room_price, 2) }}</strong><span> por noche</span></p>
 
                     @auth
+                        @if (auth()->user()->hasRole(\App\Models\Role::CUSTOMER))
                         <hr class="my-4">
                         <h2 class="h4">Reservar esta habitación</h2>
                         <p class="text-muted">Selecciona las fechas de tu estadía. La reserva quedará pendiente de confirmación.</p>
@@ -87,6 +88,12 @@
 
                             <button class="btn btn-hotel w-100 mt-3" type="submit">Solicitar reserva</button>
                         </form>
+                        @elseif (auth()->user()->hasRole(\App\Models\Role::RECEPTIONIST, \App\Models\Role::ADMINISTRATOR))
+                            <div class="alert alert-light border mt-4 mb-0">
+                                <p class="mb-3">Registra la reservación a nombre del cliente desde el panel de Recepción.</p>
+                                <a class="btn btn-hotel w-100" href="{{ route('bookings.index', ['check_in_date' => old('check_in_date'), 'check_out_date' => old('check_out_date')]) }}">Abrir reservaciones</a>
+                            </div>
+                        @endif
                     @else
                         <div class="alert alert-light border mt-4 mb-0">
                             <p class="mb-3">Inicia sesión para elegir las fechas y reservar esta habitación.</p>

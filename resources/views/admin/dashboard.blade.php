@@ -18,15 +18,6 @@
     </div>
 </div>
 
-@if (!empty($mockHotelSummary['is_simulated']))
-    <div class="alert alert-warning border-0 shadow-sm rounded-3 mb-4 d-flex align-items-start gap-2" role="alert">
-        <span class="badge bg-dark mt-1">SIMULADO</span>
-        <div class="small">
-            Los indicadores de <strong>habitaciones y reservaciones</strong> muestran datos simulados temporales hasta integrar los módulos de Habitaciones y Reservaciones.
-        </div>
-    </div>
-@endif
-
 <div class="row g-3 mb-4">
     <div class="col-12 col-sm-6 col-xl-3">
         <div class="card border-0 shadow-sm rounded-3 h-100">
@@ -40,18 +31,18 @@
     <div class="col-12 col-sm-6 col-xl-3">
         <div class="card border-0 shadow-sm rounded-3 h-100">
             <div class="card-body">
-                <div class="text-muted small fw-medium">Habitaciones (Simulado)</div>
-                <div class="h3 fw-bold mt-1 mb-0">{{ $mockHotelSummary['available_rooms'] }} / {{ $mockHotelSummary['total_rooms'] }}</div>
-                <div class="small text-muted mt-2">{{ $mockHotelSummary['occupied_rooms'] }} ocupadas &middot; {{ $mockHotelSummary['maintenance_rooms'] }} mant.</div>
+                <div class="text-muted small fw-medium">Habitaciones Operativas</div>
+                <div class="h3 fw-bold mt-1 mb-0">{{ $hotelSummary['available_rooms'] }} / {{ $hotelSummary['total_rooms'] }}</div>
+                <div class="small text-muted mt-2">{{ $hotelSummary['maintenance_rooms'] }} fuera de servicio</div>
             </div>
         </div>
     </div>
     <div class="col-12 col-sm-6 col-xl-3">
         <div class="card border-0 shadow-sm rounded-3 h-100">
             <div class="card-body">
-                <div class="text-muted small fw-medium">Reservaciones Activas (Simulado)</div>
-                <div class="h3 fw-bold mt-1 mb-0">{{ $mockHotelSummary['active_reservations'] }}</div>
-                <div class="small text-muted mt-2">{{ $mockHotelSummary['checkins_today'] }} check-ins hoy &middot; {{ $mockHotelSummary['checkouts_today'] }} check-outs</div>
+                <div class="text-muted small fw-medium">Reservaciones Activas</div>
+                <div class="h3 fw-bold mt-1 mb-0">{{ $hotelSummary['active_reservations'] }}</div>
+                <div class="small text-muted mt-2">{{ $hotelSummary['checkins_today'] }} check-ins hoy &middot; {{ $hotelSummary['checkouts_today'] }} check-outs</div>
             </div>
         </div>
     </div>
@@ -60,7 +51,7 @@
             <div class="card-body">
                 <div class="text-muted small fw-medium">Registros en Suministros</div>
                 <div class="h3 fw-bold mt-1 mb-0">{{ $totalSupplies }}</div>
-                <div class="small text-muted mt-2">Ingreso diario est. (sim.): ${{ number_format($mockHotelSummary['estimated_daily_revenue'], 2) }}</div>
+                <div class="small text-muted mt-2">Necesidades y ofertas registradas</div>
             </div>
         </div>
     </div>

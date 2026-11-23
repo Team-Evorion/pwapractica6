@@ -25,7 +25,7 @@ class AuthController extends Controller
     public function login(LoginRequest $request): RedirectResponse
     {
         $throttleKey = Str::transliterate(
-            Str::lower((string) $request->input('email')) . '|' . $request->ip()
+            Str::lower((string) $request->input('email')).'|'.$request->ip()
         );
 
         if (RateLimiter::tooManyAttempts($throttleKey, 5)) {
@@ -68,7 +68,7 @@ class AuthController extends Controller
         $request->session()->regenerate();
 
         return redirect()->intended($this->redirectPathFor($user))
-            ->with('status', 'Bienvenido de nuevo, ' . $user->name . '.');
+            ->with('status', 'Bienvenido de nuevo, '.$user->name.'.');
     }
 
     public function showRegisterForm(): View

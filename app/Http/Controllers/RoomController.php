@@ -127,6 +127,14 @@ class RoomController extends Controller
     {
         Gate::authorize('delete', $room);
 
+        if ($room->bookings()->exists()) {
+            return redirect()
+                ->route('rooms.manage')
+                ->withErrors([
+                    'room' => 'No se puede eliminar una habitación con historial de reservaciones. Desactívala para conservar la información.',
+                ]);
+        }
+
         $roomNumber = $room->room_number;
         $imagePath = $room->image_path;
         $room->delete();

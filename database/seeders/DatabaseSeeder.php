@@ -6,62 +6,47 @@ use App\Models\Role;
 use App\Models\Supply;
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        $this->call(RoleSeeder::class);
+        $this->call([
+            RoleSeeder::class,
+            RoomSeeder::class,
+        ]);
 
-        $adminRole = Role::where('name', Role::ADMINISTRATOR)->first();$supplierRole = Role::where('name', Role::SUPPLIER)->first();
-
-        $admin = null;
-        if ($adminRole) {
-            $configuredPassword = env('INITIAL_ADMIN_PASSWORD');$passwordToUse = is_string($configuredPassword) &&$configuredPassword !== ''
-                ? $configuredPassword
-                : (app()->environment(['local', 'testing']) ? Str::password(16) : null);
-
-            if ($passwordToUse !== null) {$admin = User::firstOrCreate(
-                    ['email' => 'admin@hotel.test'],
-                    [
-                        'name' => 'Administrador Inicial',
-                        'password' => Hash::make($passwordToUse),
-                        'role_id' => $adminRole->id,
-                        'is_active' => true,
-                    ]
-                );
-            }
+        $configuredPassword = env('INITIAL_ADMIN_PASSWORD');
+        if (! is_string($configuredPassword) || $configuredPassword === '') {
+            return;
         }
 
-        if ($admin && $supplierRole) {$needs = [
-                [
-                    'name' => 'Juego de sabanas algodon 300 hilos',
-                    'quantity' => 50,
-                    'notes' => 'Reposicion para habitaciones estandar y suites.',
-                ],
-                [
-                    'name' => 'Kit de amenidades de bano (jabon, shampoo, locion)',
-                    'quantity' => 200,
-                    'notes' => 'Entrega mensual para recepcion y limpieza.',
-                ],
-            ];
+        $adminRole = Role::where('name', Role::ADMINISTRATOR)->firstOrFail();
+        $admin = User::firstOrCreate(
+            ['email' => 'admin@hotel.test'],
+            [
+                'name' => 'Administrador Inicial',
+                'password' => $configuredPassword,
+                'role_id' => $adminRole->id,
+                'is_active' => true,
+            ],
+        );
 
-            foreach ($needs as$needData) {
-                Supply::firstOrCreate(
-                    [
-                        'name' => $needData['name'],
-                        'item_type' => 'need',
-                    ],
-                    [
-                        'quantity' => $needData['quantity'],
-                        'supplier_id' => $admin->id,
-                        'status' => 'open',
-                        'notes' => $needData['notes'],
-                    ]
-                );
-            }
+        $needs = [
+            ['Juego de sábanas algodón 300 hilos', 50, 'Reposición para habitaciones estándar y suites.'],
+            ['Kit de amenidades de baño', 200, 'Entrega mensual para recepción y limpieza.'],
+        ];
+
+        foreach ($needs as [$name, $quantity, $notes]) {
+            Supply::firstOrCreate(
+                ['name' => $name, 'item_type' => 'need'],
+                [
+                    'quantity' => $quantity,
+                    'supplier_id' => $admin->id,
+                    'status' => 'open',
+                    'notes' => $notes,
+                ],
+            );
         }
     }
 }

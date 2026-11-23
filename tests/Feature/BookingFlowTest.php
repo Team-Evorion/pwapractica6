@@ -6,12 +6,12 @@ use App\Models\Booking;
 use App\Models\Role;
 use App\Models\Room;
 use App\Models\User;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class BookingFlowTest extends TestCase
 {
-    use DatabaseTransactions;
+    use RefreshDatabase;
 
     public function test_booking_routes_require_authentication(): void
     {
@@ -86,11 +86,13 @@ class BookingFlowTest extends TestCase
         $this->createBooking($user, $ownRoom);
         $this->createBooking($otherUser, $otherRoom);
 
-        $this->actingAs($user)
+        $response = $this->actingAs($user)
             ->get(route('bookings.index'))
-            ->assertOk()
-            ->assertSee('1201')
-            ->assertDontSee('1202');
+            ->assertOk();
+
+        $roomIds = $response->viewData('bookings')->pluck('room_id');
+        $this->assertTrue($roomIds->contains($ownRoom->id));
+        $this->assertFalse($roomIds->contains($otherRoom->id));
     }
 
     private function customer(): User

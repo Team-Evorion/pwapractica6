@@ -59,6 +59,14 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('dashboard') }}">Inicio</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('rooms.index') }}">Habitaciones</a>
+                        </li>
+                        @can('viewAny', \App\Models\Booking::class)
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('bookings.index') }}">Reservaciones</a>
+                            </li>
+                        @endcan
                         @if (auth()->user()->hasRole(\App\Models\Role::ADMINISTRATOR))
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('admin.dashboard') }}">Panel Admin</a>
@@ -111,7 +119,7 @@
 
     <footer class="bg-white border-top py-3 mt-auto">
         <div class="container text-center text-muted small">
-            Sistema de Reservas de Hotel &mdash; Módulo de Autenticación, Administración y Proveedores
+            Hotel Evorion &mdash; Habitaciones, reservaciones y servicios integrados
         </div>
     </footer>
 

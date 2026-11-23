@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\Booking;
 use App\Models\Room;
 use App\Models\Supply;
 use App\Models\User;
+use App\Policies\BookingPolicy;
 use App\Policies\RoomPolicy;
 use App\Policies\SupplyPolicy;
 use App\Policies\UserPolicy;
@@ -21,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        Gate::policy(Booking::class, BookingPolicy::class);
         Gate::policy(Room::class, RoomPolicy::class);
         Paginator::useBootstrapFive();
         Gate::policy(User::class, UserPolicy::class);
